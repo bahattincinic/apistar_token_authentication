@@ -39,7 +39,7 @@ def sqlalcamy_get_token(session: DjangoSession, settings: Settings,
         user_settings['USERNAME_FIELD']: username,
         user_settings['PASSWORD_FIELD']: password
     }
-    user = instance = session.query(UserModel).filter_by(**filters).first()
+    user = session.query(UserModel).filter_by(**filters).first()
 
     if not user:
         raise ValidationError(detail='Username or password invalid')
