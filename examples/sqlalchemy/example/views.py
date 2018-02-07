@@ -1,20 +1,31 @@
-from apistar import Response
+from apistar import Response, annotate
 from apistar.backends.sqlalchemy_backend import Session
+from apistar.interfaces import Auth
+from apistar.permissions import IsAuthenticated
 
-from .models import Example
-from .schema import ExampleCreate, ExampleList
-
-
-def list_view(session: Session) -> Response:
-    return Response(content=[
-        ExampleList(item)
-        for item in session.query(Example).all()
-    ])
+from apistar_token_auth.authentication import SQLAlchemyTokenAuthentication
+from .schemas import SignupData
+from .models import User
+from .utils import hash_password
 
 
-def create_view(session: Session, data: ExampleCreate) -> Response:
-    instance = Example(name=data['name'])
-    session.add(instance)
+@annotate(authentication=[SQLAlchemyTokenAuthentication()],
+          permissions=[IsAuthenticated()])
+def user_profile(session: Session, auth: Auth):
+    return {
+        'username': auth.user.username
+    }
+
+
+def signup(session: Session, data: SignupData):
+    user = User(
+        username=data['username'],
+        password=hash_password(data['password'])
+    )
+    session.add(user)
     session.flush()
 
-    return Response(status=201, content=ExampleList(instance))
+    return {
+        'id': user.id,
+        'username': user.username
+    }

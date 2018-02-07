@@ -1,7 +1,7 @@
 from typing import Any
 
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy import Column, Integer, String, DateTime
+from sqlalchemy import Column, Integer, String, DateTime, func
 
 
 Base: Any = declarative_base()
@@ -20,5 +20,5 @@ class AccessToken(Base):
 
     id = Column(Integer, primary_key=True)
     token = Column(String)
-    created = Column(DateTime)
-    userId = Column(Integer)
+    created_at = Column(DateTime, default=func.now())
+    user_id = Column(Integer)

@@ -1,27 +1,26 @@
-from apistar import environment, typesystem
 from apistar.parsers import JSONParser
 
 from .models import Base
 
 
-class Env(environment.Environment):
-    properties = {
-        'DEBUG': typesystem.boolean(default=False),
-        'DATABASE_URL': typesystem.string(),
-    }
-    required = ['DEBUG']
-
-
-env = Env()
 settings = {
-    'DEBUG': env['DEBUG'],
     'DATABASE': {
-        'URL': env['DATABASE_URL'],
+        'URL': 'sqlite:///db.sql',
         'METADATA': Base.metadata
     },
     'PARSERS': [JSONParser()],
     'SCHEMA': {
         'TITLE': 'example',
         'DESCRIPTION': 'example App'
+    },
+    'TOKEN_AUTHENTICATION': {
+        'IS_EXPIRY_TOKEN': True,
+        'EXPIRY_TIME': 30,
+        'USERNAME_FIELD': 'username',
+        'PASSWORD_FIELD': 'password',
+        'ORM': 'sqlalcamy',
+        'USER_MODEL': 'example.models.User',
+        'TOKEN_MODEL': 'example.models.AccessToken',
+        'ENCRYPTION_FUNCTION': 'example.utils.hash_password'
     }
 }

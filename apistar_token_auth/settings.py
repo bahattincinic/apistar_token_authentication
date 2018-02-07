@@ -25,11 +25,11 @@ def get_settings(settings: Settings):
     user_settings = dict(settings.get(SETTINGS_KEY, {}))
     user_settings.update(DEFAULTS)
 
-    for module in import_from_string:
-        if module not in settings:
+    for module in IMPORT_STRINGS:
+        if module not in user_settings:
             raise ConfigurationError(f'{module} settings is required.')
 
-        if user_settings['ORM'] == 'sqlalcamy'
+        if user_settings['ORM'] == 'sqlalcamy':
             user_settings[module] = import_from_string(user_settings[module])
 
     return user_settings

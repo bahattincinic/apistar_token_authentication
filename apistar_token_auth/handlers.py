@@ -1,14 +1,22 @@
 from apistar import Settings
 from apistar.exceptions import ValidationError
-from apistar.backends.sqlalchemy_backend import Session as SqlalchemySession
-from apistar.backends.django_orm import Session as DjangoSession
+
+try:
+    from apistar.backends.sqlalchemy_backend import Session as SqlalchemySession
+except ImportError:
+    SqlalchemySession = None
+
+try:
+    from apistar.backends.django_orm import Session as DjangoSession
+except ImportError:
+    DjangoSession = None
 
 from .schemas import Login
 from .settings import get_settings
 from .utils import generate_key
 
 
-def django_get_token(session: SqlalchemySession, settings: Settings,
+def django_get_token(session: DjangoSession, settings: Settings,
                      data: Login):
     from django.contrib.auth import authenticate
 
@@ -24,10 +32,10 @@ def django_get_token(session: SqlalchemySession, settings: Settings,
     TokenModel = getattr(session, user_settings['TOKEN_MODEL'])
     instance = TokenModel.objects.create(user=user, key=generate_key)
 
-    return {'token': instance.key}
+    return {'token': instance.token}
 
 
-def sqlalcamy_get_token(session: DjangoSession, settings: Settings,
+def sqlalcamy_get_token(session: SqlalchemySession, settings: Settings,
                         data: Login):
     user_settings = get_settings(settings)
     username = data['username']
@@ -44,7 +52,9 @@ def sqlalcamy_get_token(session: DjangoSession, settings: Settings,
     if not user:
         raise ValidationError(detail='Username or password invalid')
     
-    token = TokenModel(key=generate_key, user_id=user.id)
+    token = TokenModel(
+        token=generate_key(), user_id=user.id
+    )
     session.add(token)
 
-    return {'token': token.key}
+    return {'token': token.token}
