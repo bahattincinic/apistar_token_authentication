@@ -11,7 +11,8 @@ DEFAULTS = {
     'EXPIRY_TIME': 30,
     'USERNAME_FIELD': 'username',
     'PASSWORD_FIELD': 'password',
-    'ORM': 'sqlalcamy'
+    'ORM': 'sqlalcamy',
+    'ENCRYPTION_FUNCTION': lambda x: x
 }
 
 IMPORT_STRINGS = (
@@ -22,11 +23,11 @@ IMPORT_STRINGS = (
 
 
 def get_settings(settings: Settings):
-    user_settings = dict(settings.get(SETTINGS_KEY, {}))
-    user_settings.update(DEFAULTS)
+    user_settings = dict(DEFAULTS)
+    user_settings.update(settings.get(SETTINGS_KEY, {}))
 
     for module in IMPORT_STRINGS:
-        if module not in user_settings:
+        if module not in user_settings and module not in DEFAULTS:
             raise ConfigurationError(f'{module} settings is required.')
 
         if user_settings['ORM'] == 'sqlalcamy':

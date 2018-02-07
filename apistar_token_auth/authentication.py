@@ -47,6 +47,7 @@ class SQLAlchemyTokenAuthentication(BaseAuthentication):
         if not instance:
             return
         
+        now = datetime.datetime.now()
         difference = datetime.timedelta(days=user_settings['EXPIRY_TIME'])
         if user_settings['IS_EXPIRY_TOKEN'] and instance.created_at < (now - difference):
             return
@@ -75,6 +76,7 @@ class DjangoTokenAuthentication(BaseAuthentication):
         if not instance:
             return
 
+        now = datetime.datetime.now()
         difference = datetime.timedelta(days=user_settings['EXPIRY_TIME'])
         if user_settings['IS_EXPIRY_TOKEN'] and instance.created_at < (now - difference):
             return
