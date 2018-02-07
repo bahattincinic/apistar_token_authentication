@@ -34,6 +34,7 @@ def sqlalcamy_get_token(session: DjangoSession, settings: Settings,
     password = user_settings['ENCRYPTION_FUNCTION'](data['password'])
 
     UserModel = user_settings['USER_MODEL']
+    TokenModel = user_settings['TOKEN_MODEL']
     filters = {
         user_settings['USERNAME_FIELD']: username,
         user_settings['PASSWORD_FIELD']: password
@@ -43,9 +44,7 @@ def sqlalcamy_get_token(session: DjangoSession, settings: Settings,
     if not user:
         raise ValidationError(detail='Username or password invalid')
     
-    token = TokenModel = user_settings['TOKEN_MODEL']()
-    token.key = generate_key
-    token.user_id = user.id
+    token = TokenModel(key=generate_key, user_id=user.id)
     session.add(token)
 
     return {'token': token.key}
