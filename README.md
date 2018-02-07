@@ -2,6 +2,8 @@
 
 Token Based Authentication for API Star
 
+![](docs/docs.gif)
+
 ## Installation
 
 ```
