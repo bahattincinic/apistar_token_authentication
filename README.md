@@ -2,7 +2,7 @@
 
 Token Based Authentication for API Star
 
-![](docs/docs.gif)
+![](docs.gif)
 
 ## Installation
 
@@ -12,5 +12,5 @@ $ pip install apistar-token-authentication
 
 ## Setup & Configuration
 
-- [Django Setup](docs/DJANGO_SETUP.md)
-- [SQLAlchemy Setup](docs/SQLALCHEMY_SETUP.md)
+- [Django Example](examples/django)
+- [SQLAlchemy Example](examples/sqlalchemy)
