@@ -30,8 +30,9 @@ def django_get_token(session: DjangoSession, settings: Settings,
         raise ValidationError(detail='Username or password invalid')
     
     TokenModel = getattr(session, user_settings['TOKEN_MODEL'])
-    instance = TokenModel.objects.create(user=user, key=generate_key)
-
+    instance = TokenModel.objects.create(
+        user=user, token=generate_key()
+    )
     return {'token': instance.token}
 
 
