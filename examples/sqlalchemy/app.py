@@ -1,22 +1,17 @@
-from apistar import Include, Route
+
 from apistar.frameworks.asyncio import ASyncIOApp as App
-from apistar.handlers import docs_urls, static_urls
+from apistar.backends import sqlalchemy_backend
+
+from example.routes import routes
+from example.settings import settings
 
 
-def welcome(name=None):
-    if name is None:
-        return {'message': 'Welcome to API Star!'}
-    return {'message': 'Welcome to API Star, %s!' % name}
-
-
-routes = [
-    Route('/', 'GET', welcome),
-    Include('/docs', docs_urls),
-    Include('/static', static_urls)
-]
-
-app = App(routes=routes)
-
+app = App(
+    routes=routes,
+    settings=settings,
+    components=sqlalchemy_backend.components,
+    commands=sqlalchemy_backend.commands
+)
 
 if __name__ == '__main__':
     app.main()
