@@ -1,16 +1,7 @@
 from apistar import Settings
 from apistar.exceptions import ValidationError
 
-try:
-    from apistar.backends.sqlalchemy_backend import Session as SqlalchemySession
-except ImportError:
-    SqlalchemySession = None
-
-try:
-    from apistar.backends.django_orm import Session as DjangoSession
-except ImportError:
-    DjangoSession = None
-
+from .compat import SqlalchemySession, DjangoSession
 from .schemas import Login
 from .settings import get_settings
 from .utils import generate_key
