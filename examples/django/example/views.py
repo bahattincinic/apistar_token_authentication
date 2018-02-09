@@ -1,4 +1,4 @@
-from apistar import Response, annotate
+from apistar import annotate
 from apistar.backends.django_orm import Session
 from apistar.interfaces import Auth
 from apistar.permissions import IsAuthenticated
