@@ -2,12 +2,14 @@
 
 Token Based Authentication for API Star
 
+[![PyPI version](https://badge.fury.io/py/apistar-token-auth.svg)](https://badge.fury.io/py/apistar-token-auth)
+
 ![](docs/docs.gif)
 
 ## Installation
 
 ```
-$ pip install apistar-token-authentication
+$ pip install apistar-token-auth
 ```
 
 # Docs
