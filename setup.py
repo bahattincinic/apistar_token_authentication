@@ -6,7 +6,7 @@ from setuptools import setup
 
 setup(
     name='apistar_token_auth',
-    version='1.0',
+    version='1.1',
     packages=['apistar_token_auth'],
     url='https://github.com/bahattincinic/apistar_token_authentication',
     license='MIT',

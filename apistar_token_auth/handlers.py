@@ -31,7 +31,7 @@ def sqlalcamy_get_token(session: SqlalchemySession, settings: Settings,
                         data: Login):
     user_settings = get_settings(settings)
     username = data['username']
-    password = user_settings['ENCRYPTION_FUNCTION'](data['password'])
+    password = user_settings['ENCRYPTION_FUNCTION'](data['password'], settings)
 
     UserModel = user_settings['USER_MODEL']
     TokenModel = user_settings['TOKEN_MODEL']
