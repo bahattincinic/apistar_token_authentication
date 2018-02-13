@@ -1,4 +1,4 @@
-from apistar import Response, annotate
+from apistar import Response, annotate, Settings
 from apistar.backends.sqlalchemy_backend import Session
 from apistar.interfaces import Auth
 from apistar.permissions import IsAuthenticated
@@ -17,10 +17,10 @@ def user_profile(session: Session, auth: Auth):
     }
 
 
-def signup(session: Session, data: SignupData):
+def signup(session: Session, data: SignupData, settings: Settings):
     user = User(
         username=data['username'],
-        password=hash_password(data['password'])
+        password=hash_password(data['password'], settings)
     )
     session.add(user)
     session.flush()
